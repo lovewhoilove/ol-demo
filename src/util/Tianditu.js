@@ -86,6 +86,40 @@ export default class Tianditu {
             }
         });
     }
+
+    /**
+     * 返回同类型的数据源组
+     * @param {string} srcGroupType 数据源组类型
+     * @returns 数据源对象组成的数组对象
+     */
+    createWMTSSourceGroup(srcGroupType) {
+        return this.#sourceGroupType[srcGroupType].map(srcType => {
+            return this.createWMTSSource(srcType);
+        });
+    }
+
+    /**
+     * 根据数据源组类型创建数据源组图层对象
+     * @param {Array} srcGroup 同类型数据源组成的数组
+     * @param {boolean} visible 图层组的可见性
+     * @param {string} srcGroupType 数据源组类型
+     * @returns 图层组对象
+     */
+    createWMTSLayerGroupBySourceGroup(srcGroup, visible, srcGroupType) {
+        const layers = srcGroup.map(src => {
+            return new TileLayer({
+                source: src,
+            });
+        });
+
+        return new LayerGroup({
+            layers,
+            visible,
+            properties: {
+                name: srcGroupType
+            }
+        });
+    }
 }
 
 /**
