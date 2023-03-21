@@ -73,6 +73,7 @@ export default {
         ],//全球境界最好放到最后，会按顺序渲染
         view: mapView,
       });
+      this.$store.commit('setMap', map);
     },
     /**
      * 切换地图和鹰眼的图层类型

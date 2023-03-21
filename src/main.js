@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
+import store from './store';
 // 第三方库
 import ElementUI from 'element-ui';
 // 自定义类
@@ -17,5 +18,6 @@ Vue.prototype.$OL = OL;
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app');
