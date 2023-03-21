@@ -1,18 +1,27 @@
 <template>
   <div class="map-view" ref="map-view">
+    <!-- 底图切换 -->
     <div class="map-view-switch">
       <el-radio-group v-model="mapType" @input="switchMapType">
         <el-radio-button label="矢量"></el-radio-button>
         <el-radio-button label="影像"></el-radio-button>
       </el-radio-group>
     </div>
+    <!-- 鼠标经纬度 -->
+    <div ref="mouse-position"></div>
   </div>
 </template>
 
 <script>
 import Map from 'ol/Map';
 import View from 'ol/View';
-import { OverviewMap, defaults as defaultControls } from 'ol/control';
+import {
+  OverviewMap,
+  MousePosition,
+  ScaleLine
+} from 'ol/control';
+import { format } from "ol/coordinate";
+import { defaults as defaultInteractions } from 'ol/interaction';
 
 let mapVecLyrGrp;
 let mapImgLyrGrp;
@@ -26,6 +35,7 @@ export default {
   data() {
     return {
       mapType: '矢量',
+      lonLatCoor: null,
     }
   },
   mounted() {
@@ -48,6 +58,7 @@ export default {
       overviewVecLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(vecSrcGrp, true, '矢量组');
       overviewImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, false, '影像组');
 
+      //创建鹰眼控件对象
       overviewMapControl = new OverviewMap({
         layers: [
           overviewVecLyrGrp,
@@ -55,6 +66,15 @@ export default {
         ],
         collapsed: false,
       });
+
+      //创建鼠标坐标位置控件
+      const mousePositionControl = new MousePosition({
+        target: this.$refs['mouse-position'],
+        coordinateFormat: this.createStringXY(4),
+      });
+
+      //创建比例尺控件
+      const scaleLineControl = new ScaleLine();
 
       const mapView = new View({
         center: [113.64, 34.72],
@@ -64,7 +84,6 @@ export default {
       });
 
       map = new Map({
-        controls: defaultControls().extend([overviewMapControl]),
         target: this.$refs['map-view'],
         layers: [
           mapVecLyrGrp,
@@ -72,8 +91,31 @@ export default {
           iboLyr
         ],//全球境界最好放到最后，会按顺序渲染
         view: mapView,
+        controls: [
+          overviewMapControl,
+          mousePositionControl,
+          scaleLineControl
+        ],
+        interactions: defaultInteractions({
+          doubleClickZoom: false
+        }),
       });
       this.$store.commit('setMap', map);
+    },
+    /**
+     * 格式化坐标的小数位数-重写官方的方法
+     * @param {number} fractionDigits 小数位数
+     */
+    createStringXY(fractionDigits) {
+      return (
+        /**
+         * @param {Coordinate} coordinate Coordinate.
+         * @return {string} String XY.
+         */
+        function (coordinate) {
+          return format(coordinate, '经度: {x} | 纬度: {y}', fractionDigits);
+        }
+      );
     },
     /**
      * 切换地图和鹰眼的图层类型
@@ -102,6 +144,7 @@ export default {
 
 <style lang="scss" scoped>
 .map-view {
+  position: relative;
   height: 100%;
 
   &-switch {
@@ -111,6 +154,7 @@ export default {
     z-index: 3;
     box-shadow: 2px 2px 10px 2px black;
     border-radius: 4px; //修改为element的边框圆角大小
+    user-select: none;
   }
 }
 </style>
