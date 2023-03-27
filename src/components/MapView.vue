@@ -70,7 +70,9 @@ export default {
       //创建鼠标坐标位置控件
       const mousePositionControl = new MousePosition({
         target: this.$refs['mouse-position'],
-        coordinateFormat: this.createStringXY(4),
+        coordinateFormat: (coordinate) => {
+          return format(coordinate, '经度: {x} | 纬度: {y}', 4);
+        },
       });
 
       //创建比例尺控件
@@ -101,21 +103,6 @@ export default {
         }),
       });
       this.$store.commit('setMap', map);
-    },
-    /**
-     * 格式化坐标的小数位数-重写官方的方法
-     * @param {number} fractionDigits 小数位数
-     */
-    createStringXY(fractionDigits) {
-      return (
-        /**
-         * @param {Coordinate} coordinate Coordinate.
-         * @return {string} String XY.
-         */
-        function (coordinate) {
-          return format(coordinate, '经度: {x} | 纬度: {y}', fractionDigits);
-        }
-      );
     },
     /**
      * 切换地图和鹰眼的图层类型
