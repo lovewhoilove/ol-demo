@@ -10,9 +10,6 @@ export default new Vuex.Store({
     getters: {
     },
     mutations: {
-        setMap(state, value) {
-            state.map = value;
-        }
     },
     actions: {
     },

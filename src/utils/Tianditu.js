@@ -6,7 +6,7 @@ import { Tile as TileLayer, Group as LayerGroup } from 'ol/layer';
 
 export default class Tianditu {
     #baseUrl = 'http://t{0-7}.tianditu.gov.cn/';
-    #tk = 'df5812a6b02d97c7a611b36343deb204';
+    #tk = '75890d81e1df2d26c95eb742f5b49b0b';
     #sourceType = {
         '矢量底图': 'vec',
         '矢量注记': 'cva',
@@ -64,6 +64,7 @@ export default class Tianditu {
             projection,
             format: this.#format,
             style: 'default',
+            crossOrigin: 'anonymous',//亲测该属性设置为空也可以
         });
     }
 
