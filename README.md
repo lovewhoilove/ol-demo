@@ -5,3 +5,5 @@
 2. [引入图层组](https://github.com/lovewhoilove/ol-demo/commit/83f8586de12415025d43ecc75d305b1636b2f9f7)
 
 3. [地图和鹰眼底图类型同步切换](https://github.com/lovewhoilove/ol-demo/commit/8b67e3548137ba0020ce17c202400a1a9ec2397e)
+
+4. [https://github.com/lovewhoilove/ol-demo/commit/789952ecfb0e10acf9d6ee1153be459be824d878](https://github.com/lovewhoilove/ol-demo/commit/789952ecfb0e10acf9d6ee1153be459be824d878)
