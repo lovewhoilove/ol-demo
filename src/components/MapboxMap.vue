@@ -46,6 +46,7 @@ export default {
         view: new View({
           center: fromLonLat([113.64, 34.72]),
           zoom: 10,
+          padding: [170, 50, 30, 150],
         }),
       });
     },

@@ -7,3 +7,5 @@
 3. [地图和鹰眼底图类型同步切换](https://github.com/lovewhoilove/ol-demo/commit/8b67e3548137ba0020ce17c202400a1a9ec2397e)
 
 4. [使用Openlayers打印天地图](https://github.com/lovewhoilove/ol-demo/commit/789952ecfb0e10acf9d6ee1153be459be824d878)
+
+5. [使用Openlayers引入mapbox矢量切片](https://github.com/lovewhoilove/ol-demo/commit/d4d78e3e72b2765e6456797933f196ab5cb594c1)
