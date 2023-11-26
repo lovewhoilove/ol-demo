@@ -1,16 +1,19 @@
 <template>
   <div class="one-map">
-    <MapView />
+    <!-- <MapView /> -->
+    <MapboxMap />
   </div>
 </template>
 
 <script>
-import MapView from '@/components/MapView.vue';
+// import MapView from '@/components/MapView.vue';
+import MapboxMap from '@/components/MapboxMap';
 
 export default {
   name: "OneMap",
   components: {
-    MapView,
+    // MapView,
+    MapboxMap,
   },
 }
 </script>
