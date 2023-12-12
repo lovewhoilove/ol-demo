@@ -1,6 +1,11 @@
 <template>
   <div class="map-view" ref="map-view">
-    <FixedScalePrint />
+    <div class="map-view-switch">
+      <el-radio-group v-model="mapType" @input="switchMapType">
+        <el-radio-button label="矢量"></el-radio-button>
+        <el-radio-button label="影像"></el-radio-button>
+      </el-radio-group>
+    </div>
   </div>
 </template>
 
@@ -12,12 +17,12 @@ import { defaults as defaultInteractions } from 'ol/interaction';
 
 import Tianditu from '@/utils/Tianditu';
 
-import FixedScalePrint from './FixedScalePrint';
+// import FixedScalePrint from './FixedScalePrint';
 
 export default {
   name: 'MapView',
   components: {
-    FixedScalePrint,
+    // FixedScalePrint,
   },
   provide() {
     return {
@@ -26,7 +31,11 @@ export default {
   },
   data() {
     this.map = null;
-    return {}
+    this.mapVecLyrGrp = null;
+    this.mapImgLyrGrp = null;
+    return {
+      mapType: '影像'
+    }
   },
   mounted() {
     this._createMap();
@@ -41,8 +50,8 @@ export default {
       const imgSrcGrp = tianditu.createWMTSSourceGroup('影像组');
 
       //创建地图的矢量组和影像组的图层组对象
-      const mapVecLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(vecSrcGrp, true, '矢量组');
-      const mapImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, false, '影像组');
+      this.mapVecLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(vecSrcGrp, false, '矢量组');
+      this.mapImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, true, '影像组');
 
       const mapView = new View({
         center: [113.64, 34.72],
@@ -56,8 +65,8 @@ export default {
       this.map = new Map({
         target: this.$refs['map-view'],
         layers: [
-          mapVecLyrGrp,
-          mapImgLyrGrp,
+          this.mapVecLyrGrp,
+          this.mapImgLyrGrp,
           iboLyr
         ],
         view: mapView,
@@ -68,7 +77,21 @@ export default {
           doubleClickZoom: false
         }),
       });
+      this.$emit('ready', this.map);
     },
+    /**
+     * 切换地图和鹰眼的图层类型
+     * @param {string} label 图层类型
+     */
+    switchMapType(label) {
+      if (label === '影像') {
+        this.mapVecLyrGrp.setVisible(false);
+        this.mapImgLyrGrp.setVisible(true);
+      } else {
+        this.mapImgLyrGrp.setVisible(false);
+        this.mapVecLyrGrp.setVisible(true);
+      }
+    }
   }
 }
 </script>
@@ -77,5 +100,14 @@ export default {
 .map-view {
   position: relative;
   height: 100%;
+}
+
+.map-view-switch {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  box-shadow: 2px 2px 10px 2px black;
+  border-radius: 4px; //修改为element的边框圆角大小
 }
 </style>

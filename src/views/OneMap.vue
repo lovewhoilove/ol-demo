@@ -1,20 +1,51 @@
 <template>
   <div class="one-map">
-    <!-- <MapView /> -->
-    <MapboxMap />
+    <MapView ref="map" @ready="init" />
+    <!-- <MapboxMap /> -->
+    <!-- <ImportShp /> -->
+    <ImportShpAndDbf />
   </div>
 </template>
 
 <script>
-// import MapView from '@/components/MapView.vue';
-import MapboxMap from '@/components/MapboxMap';
+import MapView from '@/components/MapView';
+// import MapboxMap from '@/components/MapboxMap';
+
+import { Vector as VectorSource } from 'ol/source';
+import { VectorImage as VectorLayer } from 'ol/layer';
+
+// import ImportShp from '@/components/ImportShp';
+import ImportShpAndDbf from '@/components/ImportShpAndDbf';
 
 export default {
   name: "OneMap",
   components: {
-    // MapView,
-    MapboxMap,
+    MapView,
+    // ImportShp,
+    ImportShpAndDbf,
   },
+  provide() {
+    return {
+      getMap: () => this.map,
+    };
+  },
+  data() {
+    this.map = null;
+    return {};
+  },
+  methods: {
+    init(map) {
+      this.map = map;
+      const source = new VectorSource();
+      const layer = new VectorLayer({
+        source,
+        properties: {
+          name: 'importLayer'
+        }
+      });
+      this.map.addLayer(layer);
+    },
+  }
 }
 </script>
 
