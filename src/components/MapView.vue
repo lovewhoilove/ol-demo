@@ -34,7 +34,7 @@ export default {
     this.mapVecLyrGrp = null;
     this.mapImgLyrGrp = null;
     return {
-      mapType: '影像'
+      mapType: '矢量'
     }
   },
   mounted() {
@@ -50,8 +50,8 @@ export default {
       const imgSrcGrp = tianditu.createWMTSSourceGroup('影像组');
 
       //创建地图的矢量组和影像组的图层组对象
-      this.mapVecLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(vecSrcGrp, false, '矢量组');
-      this.mapImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, true, '影像组');
+      this.mapVecLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(vecSrcGrp, true, '矢量组');
+      this.mapImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, false, '影像组');
 
       const mapView = new View({
         center: [113.64, 34.72],
