@@ -77,7 +77,6 @@ export default {
               that.showData(arr);
               that.resetDataFile();
               that.loading = false;
-              console.log(that.graticule.getMeridians());
               that.$message.success('加载完毕！');
               return;
             }

@@ -11,3 +11,5 @@
 5. [使用Openlayers引入mapbox矢量切片](https://github.com/lovewhoilove/ol-demo/commit/d4d78e3e72b2765e6456797933f196ab5cb594c1)
 
 6. [实现加载矢量数据至地图功能](https://github.com/lovewhoilove/ol-demo/commit/43c9770185793deed8597a8b89839f66b303b932)
+
+7. [加载不同坐标系下的Shapefile数据](https://github.com/lovewhoilove/ol-demo/commit/f8bf47af088e0bf7854c032279a98f4daddd8766)
