@@ -4,7 +4,8 @@
     <!-- <MapboxMap /> -->
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
-    <ImportShapefile />
+    <!-- <ImportShapefile /> -->
+    <ChangeViewProjection />
   </div>
 </template>
 
@@ -17,7 +18,8 @@ import { VectorImage as VectorLayer } from 'ol/layer';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
-import ImportShapefile from '@/components/ImportShapefile';
+// import ImportShapefile from '@/components/ImportShapefile';
+import ChangeViewProjection from '@/components/ChangeViewProjection.vue';
 
 export default {
   name: "OneMap",
@@ -25,7 +27,8 @@ export default {
     MapView,
     // ImportShp,
     // ImportShpAndDbf,
-    ImportShapefile,
+    // ImportShapefile,
+    ChangeViewProjection
   },
   provide() {
     return {
