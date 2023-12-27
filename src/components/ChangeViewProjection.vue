@@ -1,12 +1,22 @@
 <template>
   <div class="wrap" v-loading="loading">
-    <el-checkbox v-model="showGraticule" @change="handleGraticuleChange" style="margin-bottom: 10px;">经纬网</el-checkbox>
     <el-upload ref="upload" accept=".shp,.dbf,.cpg,.prj" action="" :limit="4" :file-list="[]" :auto-upload="false"
       :multiple="true" :on-change="handleFileChange">
       <el-button plain slot="trigger" size="small" type="primary">添加矢量数据</el-button>
       <div slot="tip" class="el-upload__tip">需同时上传shp、dbf、cpg、prj格式的文件,且一次最多添加 4 个文件</div>
       <el-button size="small" type="primary" @click="readData" style="margin-left: 10px;">读取矢量数据</el-button>
     </el-upload>
+    <div v-show="noProj">
+      <span style="font-size: 13px;">手动指定数据坐标系：</span>
+      <el-select v-model="assignProj" placeholder="请选择" @change="handleProjChange">
+        <el-option v-for="item in projOptions" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+        
+      </el-select>
+      <span style="font-size: 13px;">打开经纬网查找中央经线：</span>
+      <el-checkbox v-model="showGraticule" @change="handleGraticuleChange" style="margin-bottom: 10px;"><span
+          style="font-size: 13px;">经纬网</span></el-checkbox>
+    </div>
     <span ref="projInfo" class="proj-info"></span>
     <div class="info" ref="info"></div>
   </div>
@@ -43,6 +53,36 @@ export default {
     return {
       loading: false,
       showGraticule: false,
+      noProj: false,
+      assignProj: '',
+      // 在epsg.io可输入“CGCS2000 3 degree”进行模糊搜索
+      projOptions: [
+        { value: '4326', label: 'WGS 84(EPSG:4326)' },
+        { value: '3857', label: 'Web墨卡托投影(EPSG:3857)' },
+        { value: '4490', label: 'CGCS2000(地理)' },
+        { value: '4479', label: 'CGCS2000(平面)' },
+        { value: '4534', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 75E' },
+        { value: '4535', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 78E' },
+        { value: '4536', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 81E' },
+        { value: '4537', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 84E' },
+        { value: '4538', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 87E' },
+        { value: '4539', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 90E' },
+        { value: '4540', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 93E' },
+        { value: '4541', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 96E' },
+        { value: '4542', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 99E' },
+        { value: '4543', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 102E' },
+        { value: '4544', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 105E' },
+        { value: '4545', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 108E' },
+        { value: '4546', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 111E' },
+        { value: '4547', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 114E' },
+        { value: '4548', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 117E' },
+        { value: '4549', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 120E' },
+        { value: '4550', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 123E' },
+        { value: '4551', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 126E' },
+        { value: '4552', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 129E' },
+        { value: '4553', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 132E' },
+        { value: '4554', label: 'CGCS2000 / 3-degree Gauss-Kruger CM 135E' },
+      ],
     };
   },
   mounted() {
@@ -56,8 +96,8 @@ export default {
       visible: false,
       wrapX: false,
       lonLabelPosition: 0.05,
-      intervals: [3, 3],
-      maxLines: 120,
+      intervals: [30, 3],
+      maxLines: 200,
     });
     this.map.addLayer(this.graticule);
   },
@@ -124,29 +164,34 @@ export default {
           this.encoding = data;
         } else if (fileExtension === 'prj') {
           const code = getEPSGCode(data);
-          this.getEPSGInfo(code).then(res => {
-            const code = res['code'];
-            const name = res['name'];
-            const proj4def = res['wkt'];
-            const bbox = res['bbox'];
-            if (
-              code &&
-              code.length > 0 &&
-              proj4def &&
-              proj4def.length > 0 &&
-              bbox &&
-              bbox.length == 4
-            ) {
-              this.setViewProjection(code, name, proj4def, bbox);
-              return;
-            }
-          });
+          if (code) {
+            this.getEPSGInfo(code).then(res => {
+              const code = res['code'];
+              const name = res['name'];
+              const proj4def = res['wkt'];
+              const bbox = res['bbox'];
+              if (
+                code &&
+                code.length > 0 &&
+                proj4def &&
+                proj4def.length > 0 &&
+                bbox &&
+                bbox.length == 4
+              ) {
+                this.setViewProjection(code, name, proj4def, bbox);
+              }
+            });
+          } else {
+            this.noProj = true;
+          }
         }
-      }).catch(err => this.$modal.msgError(err.stack));
+      });
+      // .catch(err => this.$modal.msgError(err.stack));
     },
     //更改地图视图投影
     setViewProjection(code, name, proj4def, bbox) {
       if (code === null || name === null || proj4def === null || bbox === null) {
+        this.noProj = true;
         this.$refs.projInfo.innerText = '无法读取数据的坐标系，将使用 EPSG:4326 坐标系';
         this.map.setView(
           new View({
@@ -268,10 +313,31 @@ export default {
       this.encoding = null;
       this.$refs.projInfo.innerText = '';
       this.$refs.upload.clearFiles();//清除已上传的文件列表
+      this.noProj = false;
     },
     handleGraticuleChange(checked) {
       this.graticule.setVisible(checked);
-    }
+    },
+    handleProjChange(val) {
+      if (val) {
+        this.getEPSGInfo(val).then(res => {
+          const code = res['code'];
+          const name = res['name'];
+          const proj4def = res['wkt'];
+          const bbox = res['bbox'];
+          if (
+            code &&
+            code.length > 0 &&
+            proj4def &&
+            proj4def.length > 0 &&
+            bbox &&
+            bbox.length == 4
+          ) {
+            this.setViewProjection(code, name, proj4def, bbox);
+          }
+        });
+      }
+    },
   },
 }
 </script>
