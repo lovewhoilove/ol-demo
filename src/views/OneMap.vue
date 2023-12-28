@@ -5,7 +5,8 @@
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
     <!-- <ImportShapefile /> -->
-    <ChangeViewProjection />
+    <!-- <ChangeViewProjection /> -->
+    <ViewSwitch />
   </div>
 </template>
 
@@ -15,20 +16,18 @@ import MapView from '@/components/MapView';
 
 import { Vector as VectorSource } from 'ol/source';
 import { VectorImage as VectorLayer } from 'ol/layer';
+import ViewSwitch from '@/components/ViewSwitch';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
 // import ImportShapefile from '@/components/ImportShapefile';
-import ChangeViewProjection from '@/components/ChangeViewProjection';
+// import ChangeViewProjection from '@/components/ChangeViewProjection';
 
 export default {
   name: "OneMap",
   components: {
     MapView,
-    // ImportShp,
-    // ImportShpAndDbf,
-    // ImportShapefile,
-    ChangeViewProjection,
+    ViewSwitch,
   },
   provide() {
     return {
