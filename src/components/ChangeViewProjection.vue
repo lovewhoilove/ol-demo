@@ -6,16 +6,17 @@
       <div slot="tip" class="el-upload__tip">需同时上传shp、dbf、cpg、prj格式的文件,且一次最多添加 4 个文件</div>
       <el-button size="small" type="primary" @click="readData" style="margin-left: 10px;">读取矢量数据</el-button>
     </el-upload>
-    <div v-show="noProj">
-      <span style="font-size: 13px;">手动指定数据坐标系：</span>
+    <div v-show="needAssignProj">
+      <el-divider></el-divider>
+      <span style="font-size: 13px;">指定坐标系：</span>
       <el-select v-model="assignProj" placeholder="请选择" @change="handleProjChange">
         <el-option v-for="item in projOptions" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
-        
       </el-select>
-      <span style="font-size: 13px;">打开经纬网查找中央经线：</span>
-      <el-checkbox v-model="showGraticule" @change="handleGraticuleChange" style="margin-bottom: 10px;"><span
-          style="font-size: 13px;">经纬网</span></el-checkbox>
+      <span style="font-size: 13px;">查找中央经线：</span>
+      <el-checkbox v-model="showGraticule" @change="handleGraticuleChange" style="margin-bottom: 10px;">
+        <span style="font-size: 13px;">经纬网</span>
+      </el-checkbox>
     </div>
     <span ref="projInfo" class="proj-info"></span>
     <div class="info" ref="info"></div>
@@ -53,7 +54,7 @@ export default {
     return {
       loading: false,
       showGraticule: false,
-      noProj: false,
+      needAssignProj: false,
       assignProj: '',
       // 在epsg.io可输入“CGCS2000 3 degree”进行模糊搜索
       projOptions: [
@@ -165,33 +166,37 @@ export default {
         } else if (fileExtension === 'prj') {
           const code = getEPSGCode(data);
           if (code) {
-            this.getEPSGInfo(code).then(res => {
-              const code = res['code'];
-              const name = res['name'];
-              const proj4def = res['wkt'];
-              const bbox = res['bbox'];
-              if (
-                code &&
-                code.length > 0 &&
-                proj4def &&
-                proj4def.length > 0 &&
-                bbox &&
-                bbox.length == 4
-              ) {
-                this.setViewProjection(code, name, proj4def, bbox);
-              }
-            });
+            this.handleProjChange(code);
           } else {
-            this.noProj = true;
+            this.needAssignProj = true;
           }
         }
-      });
-      // .catch(err => this.$modal.msgError(err.stack));
+      }).catch(err => this.$modal.msgError(err.stack));
+    },
+    handleProjChange(val) {
+      if (val) {
+        this.getEPSGInfo(val).then(res => {
+          const code = res['code'];
+          const name = res['name'];
+          const proj4def = res['wkt'];
+          const bbox = res['bbox'];
+          if (
+            code &&
+            code.length > 0 &&
+            proj4def &&
+            proj4def.length > 0 &&
+            bbox &&
+            bbox.length == 4
+          ) {
+            this.setViewProjection(code, name, proj4def, bbox);
+          }
+        });
+      }
     },
     //更改地图视图投影
     setViewProjection(code, name, proj4def, bbox) {
       if (code === null || name === null || proj4def === null || bbox === null) {
-        this.noProj = true;
+        if (!this.needAssignProj) this.needAssignProj = true;
         this.$refs.projInfo.innerText = '无法读取数据的坐标系，将使用 EPSG:4326 坐标系';
         this.map.setView(
           new View({
@@ -313,30 +318,10 @@ export default {
       this.encoding = null;
       this.$refs.projInfo.innerText = '';
       this.$refs.upload.clearFiles();//清除已上传的文件列表
-      this.noProj = false;
+      this.needAssignProj = false;
     },
     handleGraticuleChange(checked) {
       this.graticule.setVisible(checked);
-    },
-    handleProjChange(val) {
-      if (val) {
-        this.getEPSGInfo(val).then(res => {
-          const code = res['code'];
-          const name = res['name'];
-          const proj4def = res['wkt'];
-          const bbox = res['bbox'];
-          if (
-            code &&
-            code.length > 0 &&
-            proj4def &&
-            proj4def.length > 0 &&
-            bbox &&
-            bbox.length == 4
-          ) {
-            this.setViewProjection(code, name, proj4def, bbox);
-          }
-        });
-      }
     },
   },
 }
@@ -344,13 +329,14 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
+  display: inline-block;
+  height: auto;
   position: absolute;
   left: 10px;
   top: 10px;
   z-index: 3;
   background-color: #ffffffee;
   box-shadow: 2px 2px 10px 2px black;
-  display: inline-block;
   border-radius: 4px;
   padding: 8px;
 
