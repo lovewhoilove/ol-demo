@@ -3,13 +3,16 @@
     <el-button-group>
       <el-button type="primary" @click="switchPrev">上一视图</el-button>
       <el-button type="primary" @click="switchNext">下一视图</el-button>
+      <el-button type="primary" @click="pointNorth">指北</el-button>
     </el-button-group>
   </div>
 </template>
 
 <script>
 import Collection from 'ol/Collection.js';
-import { unByKey } from 'ol/Observable';
+import { unlistenByKey } from 'ol/events';
+
+const MAX_LENGTH = 5;
 
 export default {
   name: 'ViewSwitch',
@@ -34,18 +37,18 @@ export default {
     bindMapMoveEndEvt() {
       this.moveEndEvtKey = this.map.on('moveend', this.saveViewState);
     },
-    //给地图解除绑定移动结束事件
-    unbindMapMoveEndEvt() {
-      this.moveEndEvtKey && unByKey(this.moveEndEvtKey);
-    },
     //保存视图状态
     saveViewState(evt) {
+      if ((this.viewStates.getLength() - 1) === MAX_LENGTH) {//若超限，则删除第一个视图状态
+        this.viewStates.removeAt(0);
+        this.currentStateIndex--;
+      }
       const map = evt.map;
       const mapView = map.getView();
       const center = mapView.getCenter();
       const zoom = mapView.getZoom();
       const rotation = mapView.getRotation();
-      const viewState = { center, zoom, rotation };
+      const viewState = { idx: this.currentStateIndex, center, zoom, rotation };
       this.viewStates.insertAt(this.currentStateIndex + 1, viewState);
       localStorage.setItem('viewStates', JSON.stringify(this.viewStates.getArray()));
       this.currentStateIndex++;
@@ -75,19 +78,35 @@ export default {
     },
     //恢复为某一视图状态
     restoreViewState(index) {
-      this.unbindMapMoveEndEvt();
+      unlistenByKey(this.moveEndEvtKey);
       const viewState = this.viewStates.getArray()[index];
       const { center, zoom, rotation } = viewState;
       this.map.getView().animate({ center, zoom, rotation, duration: 300 });
-      this.pointerDragOrWheelEvtKey && unByKey(this.pointerDragOrWheelEvtKey);
+      unlistenByKey(this.pointerDragOrWheelEvtKey);
       this.pointerDragOrWheelEvtKey = this.map.once(['pointerdrag', 'wheel'], () => {
         this.bindMapMoveEndEvt();
       });
+      //考虑到点击指北针等指北操作也要激活视图存储
+      unlistenByKey(this.pointNorthEvtKey);
+      this.pointNorthEvtKey = this.map.getView().once('change:rotation', (e) => {
+        const rotation = e.target.getRotation();
+        if (!rotation) {
+          this.bindMapMoveEndEvt();
+        }
+      });
+    },
+    //指北
+    pointNorth() {
+      const view = this.map?.getView();
+      if (view && view.getRotation()) {
+        view.setRotation(0);
+      }
     },
   },
   beforeDestroy() {
-    this.unbindMapMoveEndEvt();
-    this.pointerDragOrWheelEvtKey && unByKey(this.pointerDragOrWheelEvtKey);
+    unlistenByKey(this.moveEndEvtKey);
+    unlistenByKey(this.pointerDragOrWheelEvtKey);
+    unlistenByKey(this.pointNorthEvtKey);
   },
 }
 </script>
