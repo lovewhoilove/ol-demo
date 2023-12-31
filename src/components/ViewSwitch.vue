@@ -29,8 +29,20 @@ export default {
     this.pointerDragOrWheelEvtKey = null;
     return {};
   },
+  created() {
+    const viewStatesStorage = JSON.parse(localStorage.getItem('viewStates')) || [];
+    this.viewStates.extend(viewStatesStorage);
+  },
   mounted() {
-    this.bindMapMoveEndEvt();
+    const length = this.viewStates.getLength();
+    if (length > 0) {
+      const currentIdx = Number(localStorage.getItem('activeIndex'));
+      this.restoreViewState(currentIdx);
+      this.currentStateIndex = currentIdx;
+      this.map.once('rendercomplete', this.bindMapMoveEndEvt);
+    } else {
+      this.bindMapMoveEndEvt();
+    }
   },
   methods: {
     //给地图绑定移动结束事件
@@ -38,25 +50,30 @@ export default {
       this.moveEndEvtKey = this.map.on('moveend', this.saveViewState);
     },
     //保存视图状态
-    saveViewState(evt) {
+    saveViewState() {
       if ((this.viewStates.getLength() - 1) === MAX_LENGTH) {//若超限，则删除第一个视图状态
         this.viewStates.removeAt(0);
         this.currentStateIndex--;
       }
-      const map = evt.map;
-      const mapView = map.getView();
-      const center = mapView.getCenter();
-      const zoom = mapView.getZoom();
-      const rotation = mapView.getRotation();
-      const viewState = { idx: this.currentStateIndex, center, zoom, rotation };
+      const viewState = this.getMapViewState();
       this.viewStates.insertAt(this.currentStateIndex + 1, viewState);
       localStorage.setItem('viewStates', JSON.stringify(this.viewStates.getArray()));
       this.currentStateIndex++;
-      // console.log('保存', this.currentStateIndex);
+      localStorage.setItem('activeIndex', this.currentStateIndex);
+    },
+    getArrIndex(arr, item) {
+      return arr.indexOf(item);
+    },
+    //获取视图的center, zoom, rotation
+    getMapViewState() {
+      const mapView = this.map.getView();
+      const center = mapView.getCenter();
+      const zoom = mapView.getZoom();
+      const rotation = mapView.getRotation();
+      return { center, zoom, rotation };
     },
     //切换为上一视图
     switchPrev() {
-      // console.log('left', this.currentStateIndex);
       if (this.currentStateIndex === 0) {
         this.$message.error('已到第一个视图');
       }
@@ -67,7 +84,6 @@ export default {
     },
     //切换为下一视图
     switchNext() {
-      // console.log('right', this.currentStateIndex);
       if (this.currentStateIndex === (this.viewStates.getLength() - 1)) {
         this.$message.error('已到最后一个视图');
       }
@@ -81,22 +97,18 @@ export default {
       unlistenByKey(this.moveEndEvtKey);
       const viewState = this.viewStates.getArray()[index];
       const { center, zoom, rotation } = viewState;
-      this.map.getView().animate({ center, zoom, rotation, duration: 300 });
+      this.map.getView().animate({ center, zoom, rotation, duration: 500 });
+      localStorage.setItem('activeIndex', index);
+      //在点击视图切换按钮之后记得绑定鼠标拖拽或滚动滑动时打开地图移动事件
       unlistenByKey(this.pointerDragOrWheelEvtKey);
       this.pointerDragOrWheelEvtKey = this.map.once(['pointerdrag', 'wheel'], () => {
         this.bindMapMoveEndEvt();
       });
-      //考虑到点击指北针等指北操作也要激活视图存储
-      unlistenByKey(this.pointNorthEvtKey);
-      this.pointNorthEvtKey = this.map.getView().once('change:rotation', (e) => {
-        const rotation = e.target.getRotation();
-        if (!rotation) {
-          this.bindMapMoveEndEvt();
-        }
-      });
     },
     //指北
     pointNorth() {
+      unlistenByKey(this.moveEndEvtKey);
+      this.bindMapMoveEndEvt();
       const view = this.map?.getView();
       if (view && view.getRotation()) {
         view.setRotation(0);
@@ -106,7 +118,6 @@ export default {
   beforeDestroy() {
     unlistenByKey(this.moveEndEvtKey);
     unlistenByKey(this.pointerDragOrWheelEvtKey);
-    unlistenByKey(this.pointNorthEvtKey);
   },
 }
 </script>
