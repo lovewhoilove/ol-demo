@@ -107,7 +107,6 @@ export default {
     },
     //指北
     pointNorth() {
-      unlistenByKey(this.moveEndEvtKey);
       this.bindMapMoveEndEvt();
       const view = this.map?.getView();
       if (view && view.getRotation()) {

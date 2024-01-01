@@ -15,3 +15,5 @@
 7. [加载不同坐标系下的Shapefile数据](https://github.com/lovewhoilove/ol-demo/commit/f8bf47af088e0bf7854c032279a98f4daddd8766)
 
 8. [动态变更地图坐标系以叠加 Shapefile 数据](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/ChangeViewProjection.vue)
+
+9. [实现地图上一视图下一视图的切换及其持久化存储](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/ViewSwitch.vue)
