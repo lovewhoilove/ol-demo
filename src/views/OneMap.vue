@@ -6,7 +6,8 @@
     <!-- <ImportShpAndDbf /> -->
     <!-- <ImportShapefile /> -->
     <!-- <ChangeViewProjection /> -->
-    <ViewSwitch />
+    <!-- <ViewSwitch /> -->
+    <NorthCompass />
   </div>
 </template>
 
@@ -16,7 +17,8 @@ import MapView from '@/components/MapView';
 
 import { Vector as VectorSource } from 'ol/source';
 import { VectorImage as VectorLayer } from 'ol/layer';
-import ViewSwitch from '@/components/ViewSwitch';
+// import ViewSwitch from '@/components/ViewSwitch';
+import NorthCompass from '@/components/NorthCompass.vue';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
@@ -27,7 +29,8 @@ export default {
   name: "OneMap",
   components: {
     MapView,
-    ViewSwitch,
+    // ViewSwitch,
+    NorthCompass
   },
   provide() {
     return {
