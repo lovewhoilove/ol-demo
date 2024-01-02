@@ -17,3 +17,7 @@
 8. [动态变更地图坐标系以叠加 Shapefile 数据](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/ChangeViewProjection.vue)
 
 9. [实现地图上一视图下一视图的切换及其持久化存储](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/ViewSwitch.vue)
+
+10. [使用 Openlayers 给地图添加一个 Canvas 绘制的指北针](https://github.com/lovewhoilove/ol-demo/commit/6233f3f4c4b68067ebba9bcf0c13871829aab3a9)
+
+11. [修复改变地图大小重复存储视图状态的问题](https://github.com/lovewhoilove/ol-demo/commit/c8dd59f658d8ef6f39d565f303c20b437ec8a24e)
