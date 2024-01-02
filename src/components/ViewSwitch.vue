@@ -56,13 +56,38 @@ export default {
         this.currentStateIndex--;
       }
       const viewState = this.getMapViewState();
-      this.viewStates.insertAt(this.currentStateIndex + 1, viewState);
-      localStorage.setItem('viewStates', JSON.stringify(this.viewStates.getArray()));
-      this.currentStateIndex++;
-      localStorage.setItem('activeIndex', this.currentStateIndex);
+      const currViewState = this.viewStates.getArray()[this.currentStateIndex];
+      if (!this.objectsAreEqual(viewState, currViewState)) {
+        this.viewStates.insertAt(this.currentStateIndex + 1, viewState);
+        localStorage.setItem('viewStates', JSON.stringify(this.viewStates.getArray()));
+        this.currentStateIndex++;
+        localStorage.setItem('activeIndex', this.currentStateIndex);
+      }
     },
-    getArrIndex(arr, item) {
-      return arr.indexOf(item);
+    //检查两个对象键值和属性是否完全相同
+    objectsAreEqual(oneObj, anotherObj) {
+      // 检查两个输入是否都是对象  
+      if (typeof oneObj !== 'object' || oneObj === null || typeof anotherObj !== 'object' || anotherObj === null) {
+        return false;
+      }
+
+      // 获取对象的键  
+      const oneKeys = Object.keys(oneObj);
+      const anotherKeys = Object.keys(anotherObj);
+
+      // 检查键的数量是否相同  
+      if (oneKeys.length !== anotherKeys.length) {
+        return false;
+      }
+
+      // 遍历键并比较值  
+      for (const key of oneKeys) {
+        // 检查键是否存在于两个对象中，并且它们的值是否相等  
+        if (!anotherKeys.includes(key) || oneObj[key] !== anotherObj[key]) {
+          return false;
+        }
+      }
+      return true;
     },
     //获取视图的center, zoom, rotation
     getMapViewState() {
