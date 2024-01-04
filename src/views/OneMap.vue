@@ -8,6 +8,7 @@
     <!-- <ChangeViewProjection /> -->
     <ViewSwitch />
     <NorthCompass />
+    <GradientLine />
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import { Vector as VectorSource } from 'ol/source';
 import { VectorImage as VectorLayer } from 'ol/layer';
 import ViewSwitch from '@/components/ViewSwitch';
 import NorthCompass from '@/components/NorthCompass.vue';
+import GradientLine from '@/components/GradientLine.vue';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
@@ -30,7 +32,8 @@ export default {
   components: {
     MapView,
     ViewSwitch,
-    NorthCompass
+    NorthCompass,
+    GradientLine
   },
   provide() {
     return {
