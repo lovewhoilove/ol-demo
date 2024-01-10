@@ -1,26 +1,28 @@
 <template>
   <div class="one-map">
-    <MapView ref="map" @ready="init" />
+    <!-- <MapView ref="map" @ready="init" /> -->
     <!-- <MapboxMap /> -->
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
     <!-- <ImportShapefile /> -->
     <!-- <ChangeViewProjection /> -->
-    <ViewSwitch />
-    <NorthCompass />
-    <GradientLine />
+    <!-- <ViewSwitch /> -->
+    <!-- <NorthCompass /> -->
+    <!-- <GradientLine /> -->
+    <RiskGraph />
   </div>
 </template>
 
 <script>
-import MapView from '@/components/MapView';
+// import MapView from '@/components/MapView';
 // import MapboxMap from '@/components/MapboxMap';
 
 import { Vector as VectorSource } from 'ol/source';
 import { VectorImage as VectorLayer } from 'ol/layer';
-import ViewSwitch from '@/components/ViewSwitch';
-import NorthCompass from '@/components/NorthCompass.vue';
-import GradientLine from '@/components/GradientLine.vue';
+// import ViewSwitch from '@/components/ViewSwitch';
+// import NorthCompass from '@/components/NorthCompass.vue';
+// import GradientLine from '@/components/GradientLine.vue';
+import RiskGraph from '@/components/RiskGraph';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
@@ -30,10 +32,11 @@ import GradientLine from '@/components/GradientLine.vue';
 export default {
   name: "OneMap",
   components: {
-    MapView,
-    ViewSwitch,
-    NorthCompass,
-    GradientLine
+    // MapView,
+    // ViewSwitch,
+    // NorthCompass,
+    // GradientLine,
+    RiskGraph
   },
   provide() {
     return {

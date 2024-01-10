@@ -10,6 +10,7 @@
   "dependencies": {
     "@turf/turf": "^6.5.0",
     "core-js": "^3.8.3",
+    "echarts": "^5.4.3",
     "element-ui": "^2.15.13",
     "get-epsg-code": "^1.2.0",
     "html2canvas": "^1.4.1",
