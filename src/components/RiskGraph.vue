@@ -133,11 +133,25 @@ export default {
       const chart = echarts.init(chartDom);
       chart.setOption(option);
 
-      chart.on('mouseover', params => {
+      chart.on('mouseenter', params => {
+        console.log('mouseenter');
         const { value } = params;
         const idx = this.data.findIndex(d => d.every((item, index) => item === value[index]));
         if (idx > -1) {
           this.data[idx][3] = 1;
+          chart.setOption({
+            series: [{
+              data: this.data
+            }]
+          });
+        }
+      });
+      chart.on('mouseleave', params => {
+        console.log('mouseleave');
+        const { value } = params;
+        const idx = this.data.findIndex(d => d.every((item, index) => item === value[index]));
+        if (idx > -1) {
+          this.data[idx].length = 3;
           chart.setOption({
             series: [{
               data: this.data
