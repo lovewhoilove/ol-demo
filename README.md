@@ -23,3 +23,5 @@
 11. [修复改变地图大小重复存储视图状态的问题](https://github.com/lovewhoilove/ol-demo/commit/c8dd59f658d8ef6f39d565f303c20b437ec8a24e)
 
 12. [自定义渐变色样式类](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/GradientLineStyle.js)
+
+12. [细说 Openlayers 的图标定位](https://github.com/lovewhoilove/ol-demo/commit/7c67ecd8aa463c81a32bfd1e5a7867bbb7756fd0)
