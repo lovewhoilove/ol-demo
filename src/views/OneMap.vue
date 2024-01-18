@@ -1,6 +1,6 @@
 <template>
   <div class="one-map">
-    <!-- <MapView ref="map" @ready="init" /> -->
+    <MapView ref="map" @ready="init" />
     <!-- <MapboxMap /> -->
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
@@ -9,20 +9,22 @@
     <!-- <ViewSwitch /> -->
     <!-- <NorthCompass /> -->
     <!-- <GradientLine /> -->
-    <RiskGraph />
+    <!-- <RiskGraph /> -->
+    <IconSymbolizer />
   </div>
 </template>
 
 <script>
-// import MapView from '@/components/MapView';
+import MapView from '@/components/MapView';
 // import MapboxMap from '@/components/MapboxMap';
 
 import { Vector as VectorSource } from 'ol/source';
 import { VectorImage as VectorLayer } from 'ol/layer';
+import IconSymbolizer from '@/components/IconSymbolizer';
 // import ViewSwitch from '@/components/ViewSwitch';
 // import NorthCompass from '@/components/NorthCompass.vue';
 // import GradientLine from '@/components/GradientLine.vue';
-import RiskGraph from '@/components/RiskGraph';
+// import RiskGraph from '@/components/RiskGraph';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
@@ -32,11 +34,8 @@ import RiskGraph from '@/components/RiskGraph';
 export default {
   name: "OneMap",
   components: {
-    // MapView,
-    // ViewSwitch,
-    // NorthCompass,
-    // GradientLine,
-    RiskGraph
+    MapView,
+    IconSymbolizer,
   },
   provide() {
     return {
