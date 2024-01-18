@@ -24,4 +24,4 @@
 
 12. [自定义渐变色样式类](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/GradientLineStyle.js)
 
-12. [细说 Openlayers 的图标定位](https://github.com/lovewhoilove/ol-demo/commit/7c67ecd8aa463c81a32bfd1e5a7867bbb7756fd0)
+13. [细说 Openlayers 的图标定位](https://github.com/lovewhoilove/ol-demo/commit/7c67ecd8aa463c81a32bfd1e5a7867bbb7756fd0)
