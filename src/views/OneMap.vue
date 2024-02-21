@@ -8,9 +8,9 @@
     <!-- <ChangeViewProjection /> -->
     <!-- <ViewSwitch /> -->
     <!-- <NorthCompass /> -->
-    <!-- <GradientLine /> -->
+    <GradientLine />
     <!-- <RiskGraph /> -->
-    <IconSymbolizer />
+    <!-- <IconSymbolizer /> -->
   </div>
 </template>
 
@@ -20,10 +20,10 @@ import MapView from '@/components/MapView';
 
 import { Vector as VectorSource } from 'ol/source';
 import { VectorImage as VectorLayer } from 'ol/layer';
-import IconSymbolizer from '@/components/IconSymbolizer';
+// import IconSymbolizer from '@/components/IconSymbolizer';
 // import ViewSwitch from '@/components/ViewSwitch';
 // import NorthCompass from '@/components/NorthCompass.vue';
-// import GradientLine from '@/components/GradientLine.vue';
+import GradientLine from '@/components/GradientLine.vue';
 // import RiskGraph from '@/components/RiskGraph';
 
 // import ImportShp from '@/components/ImportShp';
@@ -35,7 +35,8 @@ export default {
   name: "OneMap",
   components: {
     MapView,
-    IconSymbolizer,
+    // IconSymbolizer,
+    GradientLine,
   },
   provide() {
     return {
