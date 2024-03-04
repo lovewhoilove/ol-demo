@@ -8,9 +8,10 @@
     <!-- <ChangeViewProjection /> -->
     <!-- <ViewSwitch /> -->
     <!-- <NorthCompass /> -->
-    <GradientLine />
+    <!-- <GradientLine /> -->
     <!-- <RiskGraph /> -->
     <!-- <IconSymbolizer /> -->
+    <ArrowLine />
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import { VectorImage as VectorLayer } from 'ol/layer';
 // import ViewSwitch from '@/components/ViewSwitch';
 // import NorthCompass from '@/components/NorthCompass.vue';
 import GradientLine from '@/components/GradientLine.vue';
+import ArrowLine from '@/components/ArrowLine.vue';
 // import RiskGraph from '@/components/RiskGraph';
 
 // import ImportShp from '@/components/ImportShp';
@@ -36,7 +38,8 @@ export default {
   components: {
     MapView,
     // IconSymbolizer,
-    GradientLine,
+    // GradientLine,
+    ArrowLine,
   },
   provide() {
     return {

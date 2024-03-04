@@ -63,8 +63,8 @@ export default {
       this.mapImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, false, '影像组');
 
       const mapView = new View({
-        center: [113.64, 34.72],
-        zoom: 10,
+        center: [113.64, 34.82],
+        zoom: 12,
         projection: 'EPSG:4326',
       });
 
