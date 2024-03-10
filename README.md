@@ -25,3 +25,5 @@
 12. [自定义渐变色样式类](https://github.com/lovewhoilove/ol-demo/blob/main/src/components/GradientLineStyle.js)
 
 13. [细说 Openlayers 的图标定位](https://github.com/lovewhoilove/ol-demo/commit/7c67ecd8aa463c81a32bfd1e5a7867bbb7756fd0)
+
+14. [使用 Openlayers 模仿有箭头并带渐变的导航路线](https://github.com/lovewhoilove/ol-demo/commit/491ef82a42ad41786c6f3c060f9f329935df9581)
