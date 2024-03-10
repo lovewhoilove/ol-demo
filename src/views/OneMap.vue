@@ -11,7 +11,8 @@
     <!-- <GradientLine /> -->
     <!-- <RiskGraph /> -->
     <!-- <IconSymbolizer /> -->
-    <ArrowLine />
+    <!-- <ArrowLine /> -->
+    <NavigationRoute />
   </div>
 </template>
 
@@ -24,8 +25,9 @@ import { VectorImage as VectorLayer } from 'ol/layer';
 // import IconSymbolizer from '@/components/IconSymbolizer';
 // import ViewSwitch from '@/components/ViewSwitch';
 // import NorthCompass from '@/components/NorthCompass.vue';
-import GradientLine from '@/components/GradientLine.vue';
-import ArrowLine from '@/components/ArrowLine.vue';
+// import GradientLine from '@/components/GradientLine.vue';
+// import ArrowLine from '@/components/ArrowLine.vue';
+import NavigationRoute from '@/components/NavigationRoute';
 // import RiskGraph from '@/components/RiskGraph';
 
 // import ImportShp from '@/components/ImportShp';
@@ -39,7 +41,8 @@ export default {
     MapView,
     // IconSymbolizer,
     // GradientLine,
-    ArrowLine,
+    // ArrowLine,
+    NavigationRoute,
   },
   provide() {
     return {
