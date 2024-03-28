@@ -13,6 +13,7 @@
     "element-ui": "^2.15.13",
     "get-epsg-code": "^1.2.0",
     "html2canvas": "^1.4.1",
+    "kompas": "^0.0.2",
     "ol": "^7.3.0",
     "reproject": "^1.2.7",
     "shapefile": "^0.6.6",

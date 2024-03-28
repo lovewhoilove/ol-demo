@@ -1,6 +1,8 @@
 <template>
   <div class="one-map">
-    <MapView ref="map" @ready="init" />
+    <!-- <MapView ref="map" @ready="init" /> -->
+    <MapView ref="map" @ready="init" v-loading="loading" element-loading-text="定位中"
+      element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" />
     <!-- <MapboxMap /> -->
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
@@ -12,7 +14,8 @@
     <!-- <RiskGraph /> -->
     <!-- <IconSymbolizer /> -->
     <!-- <ArrowLine /> -->
-    <NavigationRoute />
+    <!-- <NavigationRoute /> -->
+    <Position @handleLoading="handleLoading" />
   </div>
 </template>
 
@@ -27,13 +30,14 @@ import { VectorImage as VectorLayer } from 'ol/layer';
 // import NorthCompass from '@/components/NorthCompass.vue';
 // import GradientLine from '@/components/GradientLine.vue';
 // import ArrowLine from '@/components/ArrowLine.vue';
-import NavigationRoute from '@/components/NavigationRoute';
+// import NavigationRoute from '@/components/NavigationRoute';
 // import RiskGraph from '@/components/RiskGraph';
 
 // import ImportShp from '@/components/ImportShp';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
 // import ImportShapefile from '@/components/ImportShapefile';
 // import ChangeViewProjection from '@/components/ChangeViewProjection';
+import Position from '@/components/Position';
 
 export default {
   name: "OneMap",
@@ -42,7 +46,8 @@ export default {
     // IconSymbolizer,
     // GradientLine,
     // ArrowLine,
-    NavigationRoute,
+    // NavigationRoute,
+    Position,
   },
   provide() {
     return {
@@ -51,7 +56,9 @@ export default {
   },
   data() {
     this.map = null;
-    return {};
+    return {
+      loading: false,
+    };
   },
   methods: {
     init(map) {
@@ -64,6 +71,9 @@ export default {
         }
       });
       this.map.addLayer(layer);
+    },
+    handleLoading(bool) {
+      this.loading = bool;
     },
   }
 }
