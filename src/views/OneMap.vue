@@ -1,8 +1,14 @@
 <template>
   <div class="one-map">
     <!-- <MapView ref="map" @ready="init" /> -->
-    <MapView ref="map" @ready="init" v-loading="loading" element-loading-text="定位中"
-      element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" />
+    <MapView
+      ref="map"
+      @ready="init"
+      v-loading="loading"
+      element-loading-text="定位中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+    />
     <!-- <MapboxMap /> -->
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
@@ -15,16 +21,17 @@
     <!-- <IconSymbolizer /> -->
     <!-- <ArrowLine /> -->
     <!-- <NavigationRoute /> -->
-    <Position @handleLoading="handleLoading" />
+    <!-- <Position @handleLoading="handleLoading" /> -->
+    <BlinkAnimation />
   </div>
 </template>
 
 <script>
-import MapView from '@/components/MapView';
+import MapView from "@/components/MapView";
 // import MapboxMap from '@/components/MapboxMap';
 
-import { Vector as VectorSource } from 'ol/source';
-import { VectorImage as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from "ol/source";
+import { VectorImage as VectorLayer } from "ol/layer";
 // import IconSymbolizer from '@/components/IconSymbolizer';
 // import ViewSwitch from '@/components/ViewSwitch';
 // import NorthCompass from '@/components/NorthCompass.vue';
@@ -37,7 +44,8 @@ import { VectorImage as VectorLayer } from 'ol/layer';
 // import ImportShpAndDbf from '@/components/ImportShpAndDbf';
 // import ImportShapefile from '@/components/ImportShapefile';
 // import ChangeViewProjection from '@/components/ChangeViewProjection';
-import Position from '@/components/Position';
+// import Position from '@/components/Position';
+import BlinkAnimation from "@/components/BlinkAnimation.vue";
 
 export default {
   name: "OneMap",
@@ -47,7 +55,8 @@ export default {
     // GradientLine,
     // ArrowLine,
     // NavigationRoute,
-    Position,
+    // Position,
+    BlinkAnimation,
   },
   provide() {
     return {
@@ -67,16 +76,16 @@ export default {
       const layer = new VectorLayer({
         source,
         properties: {
-          name: 'importLayer'
-        }
+          name: "importLayer",
+        },
       });
       this.map.addLayer(layer);
     },
     handleLoading(bool) {
       this.loading = bool;
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -64,7 +64,7 @@ export default {
 
       const mapView = new View({
         center: [113.64, 34.82],
-        zoom: 12,
+        zoom: 15,
         projection: 'EPSG:4326',
       });
 
