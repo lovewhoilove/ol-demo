@@ -27,3 +27,5 @@
 13. [细说 Openlayers 的图标定位](https://github.com/lovewhoilove/ol-demo/commit/7c67ecd8aa463c81a32bfd1e5a7867bbb7756fd0)
 
 14. [使用 Openlayers 模仿有箭头并带渐变的导航路线](https://github.com/lovewhoilove/ol-demo/commit/491ef82a42ad41786c6f3c060f9f329935df9581)
+
+15. [借助 Openlayers 实现要素闪烁效果](https://github.com/lovewhoilove/ol-demo/commit/573972bf080d366877084aa8572e8a9b14874da0)
