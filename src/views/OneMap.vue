@@ -22,7 +22,8 @@
     <!-- <ArrowLine /> -->
     <!-- <NavigationRoute /> -->
     <!-- <Position @handleLoading="handleLoading" /> -->
-    <BlinkAnimation />
+    <!-- <BlinkAnimation /> -->
+    <AddLocation />
   </div>
 </template>
 
@@ -45,7 +46,8 @@ import { VectorImage as VectorLayer } from "ol/layer";
 // import ImportShapefile from '@/components/ImportShapefile';
 // import ChangeViewProjection from '@/components/ChangeViewProjection';
 // import Position from '@/components/Position';
-import BlinkAnimation from "@/components/BlinkAnimation.vue";
+// import BlinkAnimation from "@/components/BlinkAnimation.vue";
+import AddLocation from "@/components/AddLocation.vue";
 
 export default {
   name: "OneMap",
@@ -56,7 +58,8 @@ export default {
     // ArrowLine,
     // NavigationRoute,
     // Position,
-    BlinkAnimation,
+    // BlinkAnimation,
+    AddLocation,
   },
   provide() {
     return {
