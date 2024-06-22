@@ -28,4 +28,6 @@
 
 14. [使用 Openlayers 模仿有箭头并带渐变的导航路线](https://github.com/lovewhoilove/ol-demo/commit/491ef82a42ad41786c6f3c060f9f329935df9581)
 
-15. [借助 Openlayers 实现要素闪烁效果](https://github.com/lovewhoilove/ol-demo/commit/573972bf080d366877084aa8572e8a9b14874da0)
+15. [借助 Openlayers 在手机上展示定位和航向](https://github.com/lovewhoilove/ol-demo/commit/0c602bc91ddb84b0560bb7c4c8a1e56bd080f151)
+
+16. [借助 Openlayers 实现要素闪烁效果](https://github.com/lovewhoilove/ol-demo/commit/573972bf080d366877084aa8572e8a9b14874da0)
