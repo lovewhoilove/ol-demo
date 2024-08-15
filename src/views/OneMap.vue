@@ -1,14 +1,7 @@
 <template>
   <div class="one-map">
     <!-- <MapView ref="map" @ready="init" /> -->
-    <MapView
-      ref="map"
-      @ready="init"
-      v-loading="loading"
-      element-loading-text="定位中"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
-    />
+    <MapView ref="map" @ready="init" />
     <!-- <MapboxMap /> -->
     <!-- <ImportShp /> -->
     <!-- <ImportShpAndDbf /> -->
@@ -68,9 +61,7 @@ export default {
   },
   data() {
     this.map = null;
-    return {
-      loading: false,
-    };
+    return {};
   },
   methods: {
     init(map) {
@@ -83,9 +74,6 @@ export default {
         },
       });
       this.map.addLayer(layer);
-    },
-    handleLoading(bool) {
-      this.loading = bool;
     },
   },
 };

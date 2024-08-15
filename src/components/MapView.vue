@@ -1,11 +1,14 @@
 <template>
-  <div class="map-view" ref="map-view">
-    <div class="map-view-switch">
+  <div class="wrap">
+    <div class="map-view" ref="map-view" :style="{ filter: mapFilter }"></div>
+    <!--<div class="map-view-switch">
       <el-radio-group v-model="mapType" @input="switchMapType">
-        <el-radio-button label="矢量"></el-radio-button>
-        <el-radio-button label="影像"></el-radio-button>
+        <el-radio-button label="vec">矢量</el-radio-button>
+        <el-radio-button label="img">影像</el-radio-button>
+        <el-radio-button label="blue">蓝色</el-radio-button>
+        <el-radio-button label="green">绿色</el-radio-button>
       </el-radio-group>
-    </div>
+    </div>-->
     <!-- 状态栏 -->
     <div class="status-bar">
       <!-- 比例尺 -->
@@ -17,21 +20,16 @@
 </template>
 
 <script>
-import Map from 'ol/Map';
-import View from 'ol/View';
-import { ScaleLine, MousePosition } from 'ol/control';
-import { defaults as defaultInteractions } from 'ol/interaction';
+import Map from "ol/Map";
+import View from "ol/View";
+import { ScaleLine, MousePosition } from "ol/control";
+import { defaults as defaultInteractions } from "ol/interaction";
 import { format } from "ol/coordinate";
 
-import Tianditu from '@/utils/Tianditu';
-
-// import FixedScalePrint from './FixedScalePrint';
+import Tianditu from "@/utils/Tianditu.js";
 
 export default {
-  name: 'MapView',
-  components: {
-    // FixedScalePrint,
-  },
+  name: "MapView",
   provide() {
     return {
       getMap: () => this.map,
@@ -42,89 +40,105 @@ export default {
     this.mapVecLyrGrp = null;
     this.mapImgLyrGrp = null;
     return {
-      mapType: '矢量',
-      lonLatCoor: '',
-    }
+      mapType: "vec",
+      lonLatCoor: "",
+      mapFilter: "",
+    };
+  },
+  watch: {
+    mapType(val) {
+      this.setFilter(val);
+    },
   },
   mounted() {
     this._createMap();
   },
   methods: {
     _createMap() {
-      const tianditu = new Tianditu();
-      const iboLyr = tianditu.createWMTSLayer('全球境界', true);
-
-      //创建矢量组和影像组的对象
-      const vecSrcGrp = tianditu.createWMTSSourceGroup('矢量组');
-      const imgSrcGrp = tianditu.createWMTSSourceGroup('影像组');
-
-      //创建地图的矢量组和影像组的图层组对象
-      this.mapVecLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(vecSrcGrp, true, '矢量组');
-      this.mapImgLyrGrp = tianditu.createWMTSLayerGroupBySourceGroup(imgSrcGrp, false, '影像组');
-
+      const Tdt = new Tianditu();
+      this.mapVecLyrGrp = Tdt.createLyrGrp(
+        "vec",
+        this.mapType === "vec",
+        "deepBlue"
+      );
+      this.mapImgLyrGrp = Tdt.createLyrGrp(
+        "img",
+        this.mapType === "img"
+      );
       const mapView = new View({
         center: [113.64, 34.82],
         zoom: 15,
-        projection: 'EPSG:4326',
+        projection: "EPSG:4326",
       });
 
-      mapView.on('change:resolution', evt => {
+      mapView.on("change:resolution", (evt) => {
         const level = Math.round(mapView.getZoom() * 100000) / 100000;
         this.zoomLevel = `缩放等级: ${level}`;
       });
 
-      //为了更直观地显示比例尺，这里我们设置比例尺的样式为bar样式
       //创建比例尺控件
       const scaleLineControl = new ScaleLine({
-        target: this.$refs['scale-line']
+        target: this.$refs["scale-line"],
       });
 
       //创建鼠标坐标位置控件
       const mousePositionControl = new MousePosition({
-        target: this.$refs['mouse-position'],
+        target: this.$refs["mouse-position"],
         coordinateFormat: (coordinate) => {
-          return format(coordinate, '经度: {x} | 纬度: {y}', 4);
+          return format(coordinate, "经度: {x} | 纬度: {y}", 4);
         },
       });
 
       this.map = new Map({
-        target: this.$refs['map-view'],
-        layers: [
-          this.mapVecLyrGrp,
-          this.mapImgLyrGrp,
-          iboLyr
-        ],
+        target: this.$refs["map-view"],
+        layers: [this.mapVecLyrGrp, this.mapImgLyrGrp],
         view: mapView,
-        controls: [
-          scaleLineControl,
-          mousePositionControl,
-        ],
+        controls: [scaleLineControl, mousePositionControl],
         interactions: defaultInteractions({
-          doubleClickZoom: false
+          doubleClickZoom: false,
         }),
       });
-      this.$emit('ready', this.map);
+      this.$emit("ready", this.map);
     },
     /**
      * 切换地图和鹰眼的图层类型
      * @param {string} label 图层类型
      */
     switchMapType(label) {
-      if (label === '影像') {
+      if (label === "img") {
         this.mapVecLyrGrp.setVisible(false);
         this.mapImgLyrGrp.setVisible(true);
       } else {
         this.mapImgLyrGrp.setVisible(false);
         this.mapVecLyrGrp.setVisible(true);
       }
-    }
-  }
-}
+    },
+    setFilter(type) {
+      switch (type) {
+        case "blue":
+          this.mapFilter =
+            "grayscale(98%) invert(100%) sepia(20%) hue-rotate(180deg) saturate(1600%) brightness(80%) contrast(90%)";
+          break;
+        case "green":
+          this.mapFilter =
+            "grayscale(98%) invert(100%) sepia(20%) hue-rotate(120deg) saturate(1600%) brightness(100%) contrast(90%)";
+          break;
+        default:
+          this.mapFilter = "";
+          break;
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.map-view {
+.wrap {
   position: relative;
+  height: 100%;
+}
+
+.map-view {
   height: 100%;
 }
 
@@ -164,7 +178,7 @@ export default {
     }
 
     &::after {
-      content: '';
+      content: "";
       border-right: 1px solid #cdcdcd;
       height: 24px;
     }
