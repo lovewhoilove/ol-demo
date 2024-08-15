@@ -31,3 +31,9 @@
 15. [借助 Openlayers 在手机上展示定位和航向](https://github.com/lovewhoilove/ol-demo/commit/0c602bc91ddb84b0560bb7c4c8a1e56bd080f151)
 
 16. [借助 Openlayers 实现要素闪烁效果](https://github.com/lovewhoilove/ol-demo/commit/573972bf080d366877084aa8572e8a9b14874da0)
+
+17. [借助 Openlayers 实现图标定位](https://github.com/lovewhoilove/ol-demo/commit/f74e5900f671ae6ac3e79adeada574453e45eef9)
+
+18. [自定义天地图颜色](https://github.com/lovewhoilove/ol-demo/commit/6f7129271c971cdb34b4b651fff334198bfddde8)
+
+> 说明：这个项目不再更新，后续关于Openlayers相关内容，请访问使用 Vue 3搭建的新项目，[vite-vue3-ol](https://github.com/lovewhoilove/vite-vue3-ol)
